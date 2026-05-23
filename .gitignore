@@ -6,3 +6,4 @@ out/
 .env*.local
 next-env.d.ts
 tsconfig.tsbuildinfo
+.superpowers/

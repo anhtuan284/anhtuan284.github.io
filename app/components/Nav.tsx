@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const sections = ['about', 'skills', 'experience', 'projects', 'education', 'contact'];
 
@@ -12,6 +12,7 @@ export default function Nav() {
   const [active, setActive] = useState<string>('');
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
   const [mounted, setMounted] = useState(false);
+  const progressRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
     let resolved: 'light' | 'dark' | null = null;
@@ -43,6 +44,28 @@ export default function Nav() {
     return () => obs.disconnect();
   }, [isHome]);
 
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      if (progressRef.current) {
+        progressRef.current.style.setProperty('--scroll', `${pct * 100}%`);
+      }
+      raf = 0;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    tick();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
@@ -53,13 +76,13 @@ export default function Nav() {
   const isDark = mounted
     ? theme === 'dark' ||
       (theme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    : false;
+    : true;
 
   return (
     <nav className="topnav">
       <div className="topnav-inner">
         <Link href="/" className="brand">
-          tba<span className="dot">.</span>dev
+          ttba<span className="dot">.</span>dev
         </Link>
         <div className="topnav-right">
           <ul>
@@ -76,12 +99,14 @@ export default function Nav() {
             className="theme-btn"
             onClick={toggleTheme}
             aria-label="Toggle color theme"
+            aria-pressed={isDark}
             title={mounted ? (isDark ? 'Switch to light' : 'Switch to dark') : 'Toggle theme'}
             suppressHydrationWarning
           >
-            <span suppressHydrationWarning>{mounted ? (isDark ? '' : '') : ''}</span>
+            <span suppressHydrationWarning>{mounted ? (isDark ? '☼' : '☾') : '☾'}</span>
           </button>
         </div>
+        <span ref={progressRef} className="scroll-progress" aria-hidden="true" />
       </div>
     </nav>
   );

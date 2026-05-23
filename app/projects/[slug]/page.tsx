@@ -33,7 +33,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
       <Nav />
       <main id="top">
         <p className="crumb">
-          <Link href="/#projects">{'← back to projects'}</Link>
+          <Link href="/#projects">← work</Link> / {p.slug}
         </p>
 
         <header className="proj-hero">
@@ -49,14 +49,20 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           <div className="proj-hero-foot">
             {p.repo ? (
               <a href={p.repo} target="_blank" rel="noopener noreferrer" className="ext">
-                {''} View repository
+                ↗ view repository
               </a>
             ) : (
-              <span className="ext-disabled">{''} Internal project — no public repo</span>
+              <span className="ext-disabled">{'// internal project — no public repo'}</span>
             )}
             {p.extraLinks?.map((l) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="ext">
-                {''} {l.label}
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ext"
+              >
+                ↗ {l.label}
               </a>
             ))}
           </div>
@@ -111,10 +117,42 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         <Pager slug={p.slug} />
 
         <footer>
-          <p>
-            <Link href="/#projects">{'← back to projects'}</Link>
-          </p>
-          <p className="sig">© {new Date().getFullYear()} tba.dev</p>
+          <div className="footer-grid">
+            <div className="footer-col">
+              <h4>navigate</h4>
+              <ul>
+                <li>
+                  <Link href="/#projects">← back to projects</Link>
+                </li>
+                <li>
+                  <Link href="/">home</Link>
+                </li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h4>elsewhere</h4>
+              <ul>
+                {p.repo ? (
+                  <li>
+                    <a href={p.repo} target="_blank" rel="noopener noreferrer">
+                      repo ↗
+                    </a>
+                  </li>
+                ) : null}
+                <li>
+                  <a href="mailto:dev.atuan03@gmail.com">mail ↗</a>
+                </li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h4>meta</h4>
+              <ul>
+                <li>© {new Date().getFullYear()} ttba.dev</li>
+                <li>{p.year}</li>
+              </ul>
+            </div>
+          </div>
+          <p className="sig">{'// end of case study'}</p>
         </footer>
       </main>
     </>

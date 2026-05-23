@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Source_Serif_4 } from 'next/font/google';
 import './globals.css';
+import CursorGlow from './components/CursorGlow';
 
 const serif = Source_Serif_4({
   subsets: ['latin'],
@@ -16,20 +17,22 @@ export const metadata: Metadata = {
     default: 'Tuan Truong Bui Anh',
     template: '%s — Tuan Truong Bui Anh',
   },
-  description: 'Software developer based in Ho Chi Minh City — backend systems, ML pipelines, cross-platform apps.',
+  description:
+    'Mobile engineer in Ho Chi Minh City. Building Flutter + Firebase at PITEK. Before that, RAG pipelines at Azera. I like picking up the thing I don\'t know yet.',
   authors: [{ name: 'Tuan Truong Bui Anh' }],
   openGraph: {
     title: 'Tuan Truong Bui Anh',
-    description: 'Software developer based in Ho Chi Minh City.',
+    description:
+      'Mobile engineer in HCMC. Flutter + Firebase at PITEK. Backend, ML, mobile.',
     url: 'https://anhtuan284.github.io',
-    siteName: 'tba.dev',
+    siteName: 'ttba.dev',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary',
     title: 'Tuan Truong Bui Anh',
-    description: 'Software developer based in Ho Chi Minh City.',
+    description: 'Mobile engineer in HCMC. Flutter + Firebase at PITEK.',
   },
   robots: { index: true, follow: true },
 };
@@ -38,7 +41,7 @@ const themeInit = `(function(){try{var t=localStorage.getItem('theme');if(t==='d
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={serif.variable}>
+    <html lang="en" className={serif.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <link
@@ -53,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#top" className="skip-link">
           Skip to content
         </a>
+        <CursorGlow />
         {children}
       </body>
     </html>
