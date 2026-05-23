@@ -41,7 +41,7 @@ const themeInit = `(function(){try{var t=localStorage.getItem('theme');if(t==='d
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={serif.variable}>
+    <html lang="en" className={serif.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <link
