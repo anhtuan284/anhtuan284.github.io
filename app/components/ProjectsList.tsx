@@ -7,6 +7,13 @@ import type { Project } from '../data/projects';
 const FILTERS = ['All', 'Production', 'Research', 'Award', 'Archived'] as const;
 type Filter = (typeof FILTERS)[number];
 
+function statusVariant(status: Project['status']): 'live' | 'wip' | 'archived' | undefined {
+  if (status === 'Production' || status === 'Award') return 'live';
+  if (status === 'Research' || status === 'Prototype') return 'wip';
+  if (status === 'Archived' || status === 'Private') return 'archived';
+  return undefined;
+}
+
 export default function ProjectsList({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState<Filter>('All');
 
@@ -19,7 +26,8 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
     <>
       <div className="filter-bar" role="tablist" aria-label="Filter projects by status">
         {FILTERS.map((f) => {
-          const count = f === 'All' ? projects.length : projects.filter((p) => p.status === f).length;
+          const count =
+            f === 'All' ? projects.length : projects.filter((p) => p.status === f).length;
           if (f !== 'All' && count === 0) return null;
           return (
             <button
@@ -55,7 +63,9 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
                   <Link href={`/projects/${p.slug}/`}>{p.title}</Link>
                 </h3>
               </div>
-              <span className="proj-status">{p.status}</span>
+              <span className="proj-status" data-variant={statusVariant(p.status)}>
+                {p.status}
+              </span>
             </div>
             <p className="proj-blurb">{p.tagline}</p>
             <div className="proj-stack">
@@ -65,13 +75,15 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
                   {s.label}
                 </span>
               ))}
-              {p.stack.length > 6 ? <span className="chip more">+{p.stack.length - 6}</span> : null}
+              {p.stack.length > 6 ? (
+                <span className="chip more">+{p.stack.length - 6}</span>
+              ) : null}
             </div>
             <div className="proj-foot">
               <Link href={`/projects/${p.slug}/`}>{'→ '}case study</Link>
               {p.repo ? (
                 <a href={p.repo} target="_blank" rel="noopener noreferrer">
-                  {''} repo
+                  ↗ repo
                 </a>
               ) : null}
             </div>
