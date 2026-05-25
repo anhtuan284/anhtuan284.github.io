@@ -16,11 +16,11 @@ export default function Home() {
           </span>
 
           <h1>
-            Tuan
-            <br />
-            Truong
-            <br />
-            Bui Anh<span className="dot-grad">.</span>
+            <span className="name-given">Tuan</span>{' '}
+            <span className="name-mid">Truong Bui</span>{' '}
+            <span className="name-family">
+              Anh<span className="dot-grad">.</span>
+            </span>
           </h1>
 
           <div className="hero-rule" aria-hidden="true" />
