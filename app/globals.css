@@ -238,9 +238,7 @@ a:hover { color: var(--ink); text-decoration-color: var(--ink); }
 .mobile-nav {
   position: fixed;
   inset: 56px 0 0 0;
-  background: color-mix(in srgb, var(--bg) 96%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg);
   z-index: 49;
   padding: 32px var(--pad-x);
   opacity: 0;
@@ -248,9 +246,9 @@ a:hover { color: var(--ink); text-decoration-color: var(--ink); }
   transform: translateY(-8px);
   transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
   visibility: hidden;
+  overflow-y: auto;
 }
-.topnav.menu-open + * .mobile-nav,
-.topnav.menu-open .mobile-nav {
+.mobile-nav.open {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
@@ -273,7 +271,7 @@ a:hover { color: var(--ink); text-decoration-color: var(--ink); }
   padding: 0;
 }
 .mobile-nav ul li::before { content: none; }
-.topnav.menu-open .mobile-nav ul li {
+.mobile-nav.open ul li {
   animation: drawer-in var(--dur-3) var(--ease-out) calc(var(--i, 0) * 40ms + 80ms) both;
 }
 @keyframes drawer-in {
@@ -356,7 +354,7 @@ header.intro h1 {
   font-size: var(--fs-hero);
   font-weight: 600;
   letter-spacing: -0.045em;
-  line-height: 0.95;
+  line-height: 1.05;
   margin: 0 0 24px;
   text-wrap: balance;
   word-spacing: 0.04em;
@@ -366,6 +364,8 @@ header.intro h1 .name-given,
 header.intro h1 .name-mid,
 header.intro h1 .name-family {
   display: inline-block;
+  padding-bottom: 0.08em;
+  line-height: 1;
 }
 
 header.intro h1 .name-mid {
@@ -489,6 +489,38 @@ section ul li::before {
 
 section ul li strong { color: var(--ink); font-weight: 600; }
 
+/* recognition-style list (direct children of a section.reveal) — card-lite items
+   with stagger reveal + hover slide. Does not affect lists nested inside .entry/.timeline. */
+.reveal > ul > li {
+  margin: 0 0 6px;
+  padding: 14px 18px 14px 40px;
+  background: transparent;
+  border-radius: 8px;
+  transition: background var(--dur-2) var(--ease),
+              transform var(--dur-2) var(--ease),
+              color var(--dur-2) var(--ease);
+  opacity: 0;
+  transform: translateY(8px);
+}
+.reveal > ul > li::before {
+  left: 18px;
+  top: 14px;
+  transition: color var(--dur-2) var(--ease);
+}
+.reveal > ul > li:hover {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  transform: translateX(4px);
+  color: var(--ink);
+}
+.reveal > ul > li:hover::before { color: var(--ink); }
+.reveal.in-view > ul > li {
+  animation: chip-in var(--dur-3) var(--ease-out) both;
+}
+.reveal.in-view > ul > li:nth-child(1) { animation-delay: 120ms; }
+.reveal.in-view > ul > li:nth-child(2) { animation-delay: 200ms; }
+.reveal.in-view > ul > li:nth-child(3) { animation-delay: 280ms; }
+.reveal.in-view > ul > li:nth-child(4) { animation-delay: 360ms; }
+
 /* ─────────────── about + now.txt ─────────────── */
 .about-grid {
   display: grid;
@@ -531,31 +563,53 @@ section ul li strong { color: var(--ink); font-weight: 600; }
 .now-txt .now-val { color: var(--ink); }
 
 /* ─────────────── skills ─────────────── */
-.skill-rows { display: flex; flex-direction: column; gap: 18px; }
+.skill-rows { display: flex; flex-direction: column; gap: 6px; }
 
 .skill-row {
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 90px 1fr;
   gap: 20px;
   align-items: start;
+  padding: 14px 16px;
+  border-radius: 10px;
+  position: relative;
+  transition: background var(--dur-2) var(--ease);
+}
+.skill-row::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+  opacity: 0.6;
+}
+.skill-row:first-child::before { display: none; }
+
+.skill-row:hover {
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
 }
 
 .skill-row .skill-label {
   font-family: var(--mono);
   font-size: var(--fs-mono);
   color: var(--soft);
-  letter-spacing: 0.04em;
-  padding-top: 6px;
+  letter-spacing: 0.06em;
+  padding-top: 8px;
+  position: relative;
+  transition: color var(--dur-2) var(--ease);
 }
+.skill-row:hover .skill-label { color: var(--ink); }
 
 .skill-row .skill-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 @media (max-width: 640px) {
-  .skill-row { grid-template-columns: 1fr; gap: 8px; }
+  .skill-row { grid-template-columns: 1fr; gap: 10px; padding: 12px 10px; }
 }
 
 /* ─────────────── chips ─────────────── */
@@ -565,78 +619,238 @@ section ul li strong { color: var(--ink); font-weight: 600; }
   color: var(--muted);
   background: var(--surface);
   border: 1px solid var(--rule);
-  padding: 5px 11px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   letter-spacing: 0.02em;
-  transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color var(--dur-1) var(--ease),
+              border-color var(--dur-2) var(--ease),
+              transform var(--dur-2) var(--ease),
+              box-shadow var(--dur-2) var(--ease),
+              background var(--dur-2) var(--ease);
 }
-.chip:hover { color: var(--ink); border-color: var(--ink); }
-.chip .ico { font-size: 0.9rem; color: var(--muted); }
+.chip > * { position: relative; z-index: 1; }
+.chip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    color-mix(in srgb, var(--ink) 12%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translateX(-110%);
+  pointer-events: none;
+  transition: transform 650ms var(--ease-out);
+  z-index: 0;
+}
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--surface-2) 80%, var(--surface));
+  box-shadow:
+    0 0 0 1px var(--rule-2),
+    0 12px 28px -12px color-mix(in srgb, var(--ink) 24%, transparent),
+    0 0 32px -16px color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.chip:hover::before { transform: translateX(110%); }
+.chip:hover .ico { color: var(--ink); }
+.chip .ico { font-size: 0.95rem; color: var(--muted); transition: color var(--dur-2) var(--ease); }
 .chip.more { background: transparent; color: var(--soft); border-style: dashed; }
+
+/* stagger chip reveal when skills section enters view */
+.skill-chips .chip {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.reveal.in-view .skill-chips .chip {
+  animation: chip-in var(--dur-3) var(--ease-out) both;
+}
+@keyframes chip-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+.skill-chips .chip:nth-child(1) { animation-delay: 80ms; }
+.skill-chips .chip:nth-child(2) { animation-delay: 130ms; }
+.skill-chips .chip:nth-child(3) { animation-delay: 180ms; }
+.skill-chips .chip:nth-child(4) { animation-delay: 230ms; }
+.skill-chips .chip:nth-child(5) { animation-delay: 280ms; }
+.skill-chips .chip:nth-child(6) { animation-delay: 330ms; }
+.skill-chips .chip:nth-child(7) { animation-delay: 380ms; }
+.skill-chips .chip:nth-child(8) { animation-delay: 430ms; }
 
 /* ─────────────── experience timeline ─────────────── */
 .timeline {
   position: relative;
-  padding-left: 24px;
+  padding-left: 32px;
 }
 .timeline::before {
   content: '';
   position: absolute;
   left: 4px;
-  top: 6px;
-  bottom: 6px;
+  top: 22px;
+  bottom: 22px;
   width: 1px;
-  background: var(--rule);
+  background: linear-gradient(180deg, transparent, var(--rule) 8%, var(--rule) 92%, transparent);
 }
 
 .entry {
   position: relative;
-  margin: 0 0 36px;
+  margin: 0 0 18px;
+  padding: 22px 24px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform var(--dur-2) var(--ease),
+              border-color var(--dur-2) var(--ease),
+              box-shadow var(--dur-3) var(--ease);
+  isolation: isolate;
 }
+
+/* timeline dot — sits in the rail */
 .entry::before {
   content: '';
   position: absolute;
-  left: -24px;
-  top: 8px;
-  width: 8px;
-  height: 8px;
+  left: -32px;
+  top: 28px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--surface-2);
   border: 1px solid var(--rule-2);
-  transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease),
-              transform var(--dur-2) var(--ease);
+  transition: background var(--dur-2) var(--ease),
+              border-color var(--dur-2) var(--ease),
+              transform var(--dur-2) var(--ease),
+              box-shadow var(--dur-2) var(--ease);
+  z-index: 1;
 }
-.entry:hover::before { background: var(--ink); border-color: var(--ink); transform: scale(1.2); }
+
+/* light sweep — runs across the card on hover */
+.entry::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    color-mix(in srgb, var(--ink) 6%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translateX(-110%);
+  pointer-events: none;
+  transition: transform 900ms var(--ease-out);
+  z-index: 0;
+}
+
+.entry > * { position: relative; z-index: 1; }
+
+.entry:hover {
+  transform: translateY(-2px);
+  border-color: var(--rule-2);
+  box-shadow:
+    0 0 0 1px var(--rule-2),
+    0 24px 60px -28px color-mix(in srgb, var(--ink) 18%, transparent),
+    0 0 60px -20px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.entry:hover::before {
+  background: var(--ink);
+  border-color: var(--ink);
+  transform: scale(1.35);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+.entry:hover::after { transform: translateX(110%); }
+
 .entry.current::before {
   background: var(--ink);
   border-color: var(--ink);
-  box-shadow: 0 0 0 0 var(--ink);
   animation: pulse-dot 2.4s var(--ease) infinite;
 }
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 250, 250, 0.35); }
-  50% { box-shadow: 0 0 0 6px rgba(250, 250, 250, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 250, 250, 0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(250, 250, 250, 0); }
 }
 
-.entry h3 { font-family: var(--font-serif), serif; }
+/* role title — animated gradient underline grows on hover */
+.entry h3 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.2rem;
+  letter-spacing: -0.005em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 2px;
+}
+.entry h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 0;
+  background: linear-gradient(90deg, var(--ink), color-mix(in srgb, var(--ink) 30%, transparent));
+  transition: width var(--dur-3) var(--ease-out);
+}
+.entry:hover h3::after { width: 100%; }
+
+/* "NOW" badge on current entry */
+.entry.current h3::before {
+  content: 'NOW';
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--bg);
+  background: var(--ink);
+  padding: 3px 7px;
+  border-radius: 4px;
+  align-self: center;
+  line-height: 1;
+}
+
 .entry .when {
   font-family: var(--mono);
   color: var(--muted);
   font-size: var(--fs-mono);
   letter-spacing: 0.04em;
-  margin: 0 0 4px;
+  margin: 8px 0 4px;
 }
 .entry .where {
   font-family: var(--mono);
   color: var(--soft);
   font-size: var(--fs-tiny);
   letter-spacing: 0.06em;
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   text-transform: uppercase;
 }
+
+/* staggered bullet reveal — runs once when the wrapping section enters view */
+.entry ul li {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--dur-3) var(--ease-out),
+              transform var(--dur-3) var(--ease-out);
+}
+.reveal.in-view .entry ul li {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(var(--li, 0) * 60ms + 120ms);
+}
+.entry ul li:nth-child(1) { --li: 0; }
+.entry ul li:nth-child(2) { --li: 1; }
+.entry ul li:nth-child(3) { --li: 2; }
+.entry ul li:nth-child(4) { --li: 3; }
+.entry ul li:nth-child(5) { --li: 4; }
+.entry ul li:nth-child(6) { --li: 5; }
+.entry ul li:nth-child(7) { --li: 6; }
+.entry ul li:nth-child(8) { --li: 7; }
 
 /* ─────────────── filter bar ─────────────── */
 .filter-bar {
@@ -1267,6 +1481,11 @@ footer .sig {
     scroll-behavior: auto !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .entry ul li { opacity: 1; transform: none; }
+  .entry::after { display: none; }
+  .skill-chips .chip { opacity: 1; transform: none; animation: none; }
+  .chip::before { display: none; }
+  .reveal > ul > li { opacity: 1; transform: none; animation: none; }
   .typed {
     width: auto;
     border-right: 0;

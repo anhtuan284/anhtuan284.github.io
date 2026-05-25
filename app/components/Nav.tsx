@@ -94,6 +94,7 @@ export default function Nav() {
     : true;
 
   return (
+    <>
     <nav className={`topnav${menuOpen ? ' menu-open' : ''}`}>
       <div className="topnav-inner">
         <Link href="/" className="brand" onClick={() => setMenuOpen(false)}>
@@ -134,13 +135,14 @@ export default function Nav() {
         </div>
         <span ref={progressRef} className="scroll-progress" aria-hidden="true" />
       </div>
-      <div
-        id="mobile-nav"
-        className="mobile-nav"
-        role="dialog"
-        aria-modal="true"
-        aria-hidden={!menuOpen}
-      >
+    </nav>
+    <div
+      id="mobile-nav"
+      className={`mobile-nav${menuOpen ? ' open' : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-hidden={!menuOpen}
+    >
         <ul>
           {sections.map((id, i) => (
             <li key={id} style={{ ['--i' as string]: i } as React.CSSProperties}>
@@ -154,8 +156,8 @@ export default function Nav() {
               </Link>
             </li>
           ))}
-        </ul>
-      </div>
-    </nav>
+      </ul>
+    </div>
+    </>
   );
 }
