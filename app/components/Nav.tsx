@@ -12,6 +12,7 @@ export default function Nav() {
   const [active, setActive] = useState<string>('');
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const progressRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
@@ -66,6 +67,20 @@ export default function Nav() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
+
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
@@ -79,13 +94,13 @@ export default function Nav() {
     : true;
 
   return (
-    <nav className="topnav">
+    <nav className={`topnav${menuOpen ? ' menu-open' : ''}`}>
       <div className="topnav-inner">
-        <Link href="/" className="brand">
+        <Link href="/" className="brand" onClick={() => setMenuOpen(false)}>
           ttba<span className="dot">.</span>dev
         </Link>
         <div className="topnav-right">
-          <ul>
+          <ul className="nav-links">
             {sections.map((id) => (
               <li key={id}>
                 <Link href={`/#${id}`} data-active={isHome && active === id ? 'true' : undefined}>
@@ -105,8 +120,41 @@ export default function Nav() {
           >
             <span suppressHydrationWarning>{mounted ? (isDark ? '☼' : '☾') : '☾'}</span>
           </button>
+          <button
+            type="button"
+            className="menu-btn"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <span className="menu-bar" aria-hidden="true" />
+            <span className="menu-bar" aria-hidden="true" />
+          </button>
         </div>
         <span ref={progressRef} className="scroll-progress" aria-hidden="true" />
+      </div>
+      <div
+        id="mobile-nav"
+        className="mobile-nav"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!menuOpen}
+      >
+        <ul>
+          {sections.map((id, i) => (
+            <li key={id} style={{ ['--i' as string]: i } as React.CSSProperties}>
+              <Link
+                href={`/#${id}`}
+                onClick={() => setMenuOpen(false)}
+                data-active={isHome && active === id ? 'true' : undefined}
+              >
+                <span className="mobile-nav-num">{String(i + 1).padStart(2, '0')}</span>
+                {id}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </nav>
   );
