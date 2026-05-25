@@ -33,7 +33,7 @@
   --max-w: 1080px;
   --pad-x: clamp(20px, 5vw, 48px);
 
-  --fs-hero: clamp(3.5rem, 9vw, 7rem);
+  --fs-hero: clamp(2.4rem, 11vw, 7.5rem);
   --fs-h2: clamp(1.6rem, 3vw, 2.2rem);
   --fs-h3: 1.15rem;
   --fs-body: 1rem;
@@ -258,9 +258,24 @@ header.intro .eyebrow {
 header.intro h1 {
   font-size: var(--fs-hero);
   font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 0.92;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
   margin: 0 0 24px;
+  text-wrap: balance;
+  word-spacing: 0.04em;
+}
+
+header.intro h1 .name-given,
+header.intro h1 .name-mid,
+header.intro h1 .name-family {
+  display: inline-block;
+}
+
+header.intro h1 .name-mid {
+  background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 header.intro h1 .dot-grad {
