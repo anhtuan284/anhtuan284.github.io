@@ -5,24 +5,21 @@ export const alt = 'Tuan Truong Bui Anh — Mobile engineer';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-async function loadFont(family: string, weight: number) {
-  const cssUrl = `https://fonts.googleapis.com/css2?family=${family}:wght@${weight}`;
+async function loadFont(family: string, axes: string) {
+  const cssUrl = `https://fonts.googleapis.com/css2?family=${family}:${axes}`;
   const css = await fetch(cssUrl, {
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-    },
+    headers: { 'User-Agent': 'Mozilla/4.0' },
   }).then((r) => r.text());
   const url = css.match(/src:\s*url\((https:\/\/[^)]+)\)/)?.[1];
-  if (!url) throw new Error(`Font url not found for ${family} ${weight}`);
+  if (!url) throw new Error(`Font url not found for ${family} ${axes}`);
   return fetch(url).then((r) => r.arrayBuffer());
 }
 
 export default async function OG() {
   const [serif, serifBold, mono] = await Promise.all([
-    loadFont('Source+Serif+4', 400),
-    loadFont('Source+Serif+4', 600),
-    loadFont('JetBrains+Mono', 400),
+    loadFont('Source+Serif+4', 'wght@400'),
+    loadFont('Source+Serif+4', 'wght@600'),
+    loadFont('JetBrains+Mono', 'wght@400'),
   ]);
 
   return new ImageResponse(
