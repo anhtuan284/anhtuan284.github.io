@@ -14,14 +14,14 @@ const serif = Source_Serif_4({
 export const metadata: Metadata = {
   metadataBase: new URL('https://anhtuan284.github.io'),
   title: {
-    default: 'Tuan Truong Bui Anh',
+    default: 'Tuan Truong Bui Anh — Mobile Engineer · HCMC',
     template: '%s — Tuan Truong Bui Anh',
   },
   description:
     'Mobile engineer in Ho Chi Minh City. Building Flutter + Firebase at PITEK. Before that, RAG pipelines at Azera. I like picking up the thing I don\'t know yet.',
   authors: [{ name: 'Tuan Truong Bui Anh' }],
   openGraph: {
-    title: 'Tuan Truong Bui Anh',
+    title: 'Tuan Truong Bui Anh — Mobile Engineer · HCMC',
     description:
       'Mobile engineer in HCMC. Flutter + Firebase at PITEK. Backend, ML, mobile.',
     url: 'https://anhtuan284.github.io',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tuan Truong Bui Anh',
+    title: 'Tuan Truong Bui Anh — Mobile Engineer · HCMC',
     description: 'Mobile engineer in HCMC. Flutter + Firebase at PITEK.',
   },
   robots: { index: true, follow: true },
