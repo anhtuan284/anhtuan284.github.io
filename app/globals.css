@@ -1187,12 +1187,44 @@ section ul li strong { color: var(--ink); font-weight: 600; }
 .crumb a:hover { color: var(--ink); }
 
 .proj-hero {
-  margin-bottom: 80px;
+  margin-bottom: 56px;
   padding-bottom: 36px;
   background-image: linear-gradient(90deg, var(--rule-2) 20%, transparent 80%);
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 100% 1px;
+}
+
+.proj-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0;
+  margin: 0 0 32px;
+  padding: 18px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.proj-meta-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 20px;
+  border-left: 1px solid var(--rule);
+}
+.proj-meta-grid > div:first-child { border-left: 0; padding-left: 0; }
+.proj-meta-grid dt {
+  font-family: var(--mono);
+  font-size: var(--fs-tiny);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.proj-meta-grid dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--ink);
+  letter-spacing: 0.02em;
 }
 
 .proj-hero .eyebrow {
@@ -1205,17 +1237,17 @@ section ul li strong { color: var(--ink); font-weight: 600; }
 }
 
 .proj-hero h1 {
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
   font-weight: 600;
   letter-spacing: -0.03em;
-  line-height: 1;
-  margin: 8px 0 20px;
+  line-height: 1.05;
+  margin: 8px 0 18px;
 }
 
 .proj-hero .tagline {
   font-style: italic;
   color: var(--muted);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   max-width: 60ch;
   margin: 0 0 24px;
   line-height: 1.5;
@@ -1336,7 +1368,30 @@ section ul li strong { color: var(--ink); font-weight: 600; }
   text-align: center;
 }
 
-.proj-stack.big .chip { font-size: var(--fs-mono); padding: 7px 12px; }
+.stack-section .proj-stack.big {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.proj-stack.big .chip {
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--rule-2);
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  transition: border-color var(--dur-2) var(--ease),
+              transform var(--dur-2) var(--ease),
+              background var(--dur-2) var(--ease);
+}
+.proj-stack.big .chip:hover {
+  border-color: var(--ink);
+  background: var(--surface-2);
+  transform: translateY(-2px);
+}
+.proj-stack.big .chip .ico { font-size: 1rem; }
 
 /* ─────────────── lightbox ─────────────── */
 .lightbox {
