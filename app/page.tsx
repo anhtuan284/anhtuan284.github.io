@@ -62,6 +62,8 @@ export default function Home() {
           </div>
         </Reveal>
 
+        <TerminalLog />
+
         <Reveal as="section" id="about">
           <h2>About</h2>
           <div className="about-grid">
@@ -214,8 +216,6 @@ export default function Home() {
             </div>
           </a>
         </Reveal>
-
-        <TerminalLog />
 
         <footer id="contact">
           <div className="footer-grid">
