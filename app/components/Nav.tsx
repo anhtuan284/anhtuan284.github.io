@@ -13,7 +13,23 @@ export default function Nav() {
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [localTime, setLocalTime] = useState<string>('');
   const progressRef = useRef<HTMLSpanElement | null>(null);
+
+  useEffect(() => {
+    const tick = () => {
+      const t = new Date().toLocaleTimeString('en-GB', {
+        timeZone: 'Asia/Ho_Chi_Minh',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+      setLocalTime(t);
+    };
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     let resolved: 'light' | 'dark' | null = null;
@@ -97,19 +113,35 @@ export default function Nav() {
     <>
     <nav className={`topnav${menuOpen ? ' menu-open' : ''}`}>
       <div className="topnav-inner">
-        <Link href="/" className="brand" onClick={() => setMenuOpen(false)}>
-          ttba<span className="dot">.</span>dev
+        <Link href="/" className="brand-stack" onClick={() => setMenuOpen(false)}>
+          <span className="brand-avatar" aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/avatar.png" alt="" />
+          </span>
+          <span className="brand-meta">
+            <span className="brand">
+              Tuan T<span className="dot">.</span>B<span className="dot">.</span>A
+              <span className="dot">.</span>
+            </span>
+            <span className="brand-role" suppressHydrationWarning>
+              Mobile Engineer · HCMC{localTime ? ` · ${localTime} GMT+7` : ''}
+            </span>
+          </span>
         </Link>
         <div className="topnav-right">
           <ul className="nav-links">
             {sections.map((id) => (
               <li key={id}>
                 <Link href={`/#${id}`} data-active={isHome && active === id ? 'true' : undefined}>
-                  {id}
+                  <span className="nav-link-text">{id}</span>
                 </Link>
               </li>
             ))}
           </ul>
+          <a href="mailto:dev.atuan03@gmail.com" className="cta-btn">
+            <span className="cta-label">get in touch</span>
+            <span className="cta-arrow" aria-hidden="true">→</span>
+          </a>
           <button
             type="button"
             className="theme-btn"

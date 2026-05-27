@@ -1,6 +1,7 @@
 import Nav from './components/Nav';
 import ProjectsList from './components/ProjectsList';
 import Reveal from './components/Reveal';
+import TerminalLog from './components/TerminalLog';
 import Typed from './components/Typed';
 import { projects } from './data/projects';
 
@@ -45,6 +46,21 @@ export default function Home() {
             <a href="mailto:dev.atuan03@gmail.com">mail ↗</a>
           </div>
         </header>
+
+        <Reveal as="div" className="stats-row">
+          <div className="stat">
+            <span className="stat-num">02<span className="stat-plus">+</span></span>
+            <span className="stat-label">YEARS BUILDING</span>
+          </div>
+          <div className="stat">
+            <span className="stat-num">{String(projects.length).padStart(2, '0')}</span>
+            <span className="stat-label">PROJECTS SHIPPED</span>
+          </div>
+          <div className="stat">
+            <span className="stat-num">02</span>
+            <span className="stat-label">PRODUCTION APPS</span>
+          </div>
+        </Reveal>
 
         <Reveal as="section" id="about">
           <h2>About</h2>
@@ -186,6 +202,20 @@ export default function Home() {
             </li>
           </ul>
         </Reveal>
+
+        <Reveal as="section" className="life-section" id="life">
+          <h2>Life</h2>
+          <a href="#" className="life-card" aria-label="Outside of work — running, side projects, learning">
+            <div className="life-bg" aria-hidden="true" />
+            <div className="life-overlay">
+              <span className="life-meta">HCMC · 2026 · OUTSIDE WORK</span>
+              <h3 className="life-title">side projects, long runs, books I haven&apos;t finished</h3>
+              <span className="life-cta">read the journal <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+        </Reveal>
+
+        <TerminalLog />
 
         <footer id="contact">
           <div className="footer-grid">
