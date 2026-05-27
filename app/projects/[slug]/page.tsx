@@ -37,15 +37,33 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         </p>
 
         <header className="proj-hero">
-          <p className="eyebrow">
-            {p.status} · {p.year}
-            {p.role ? ` · ${p.role}` : ''}
-          </p>
+          <p className="eyebrow">{p.status} · {p.year}{p.role ? ` · ${p.role}` : ''}</p>
           <h1>{p.title}</h1>
-          <p className="tagline">
-            <em>{p.tagline}</em>
-          </p>
-          {p.team ? <p className="team-line">{p.team}</p> : null}
+          <p className="tagline"><em>{p.tagline}</em></p>
+
+          <dl className="proj-meta-grid">
+            <div>
+              <dt>Status</dt>
+              <dd>{p.status}</dd>
+            </div>
+            <div>
+              <dt>Year</dt>
+              <dd>{p.year}</dd>
+            </div>
+            {p.role ? (
+              <div>
+                <dt>Role</dt>
+                <dd>{p.role}</dd>
+              </div>
+            ) : null}
+            {p.team ? (
+              <div>
+                <dt>Team</dt>
+                <dd>{p.team}</dd>
+              </div>
+            ) : null}
+          </dl>
+
           <div className="proj-hero-foot">
             {p.repo ? (
               <a href={p.repo} target="_blank" rel="noopener noreferrer" className="ext">
@@ -67,6 +85,18 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             ))}
           </div>
         </header>
+
+        <section className="stack-section">
+          <h2>Tech Stack</h2>
+          <div className="proj-stack big">
+            {p.stack.map((s) => (
+              <span key={s.label} className="chip">
+                {s.ico ? <span className="ico">{s.ico}</span> : null}
+                {s.label}
+              </span>
+            ))}
+          </div>
+        </section>
 
         <section>
           <h2>Overview</h2>
@@ -100,18 +130,6 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         <section>
           <h2>Visualization</h2>
           <VizGrid items={p.visualization} />
-        </section>
-
-        <section>
-          <h2>Tech Stack</h2>
-          <div className="proj-stack big">
-            {p.stack.map((s) => (
-              <span key={s.label} className="chip">
-                {s.ico ? <span className="ico">{s.ico}</span> : null}
-                {s.label}
-              </span>
-            ))}
-          </div>
         </section>
 
         <Pager slug={p.slug} />

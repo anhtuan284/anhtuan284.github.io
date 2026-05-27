@@ -62,6 +62,8 @@ export default function Home() {
           </div>
         </Reveal>
 
+        <TerminalLog />
+
         <Reveal as="section" id="about">
           <h2>About</h2>
           <div className="about-grid">
@@ -183,11 +185,13 @@ export default function Home() {
           <div className="timeline">
             <div className="entry">
               <h3>B.Sc. Computer Science — Ho Chi Minh City Open University</h3>
-              <p className="when">OCT 2021 → NOW</p>
+              <p className="when">OCT 2021 → OCT 2025</p>
+              <p className="where">Software Engineering branch · CPA 3.7 / 4.0 · Top 3 in major</p>
             </div>
             <div className="entry">
               <h3>Big Data Track — Samsung Innovation Campus</h3>
-              <p className="when">JUN 2024 → AUG 2024</p>
+              <p className="when">APR 2024 → AUG 2024</p>
+              <p className="where">Hadoop · Spark · Kafka · MariaDB</p>
             </div>
           </div>
         </Reveal>
@@ -195,10 +199,41 @@ export default function Home() {
         <Reveal as="section">
           <h2>Recognition</h2>
           <ul>
-            <li>4th Prize, Student Informatics Olympiad 2024 — Open Source Software track.</li>
             <li>
-              Consolation Prize, Scientific Research — automated student attendance via cornea
-              tracking.
+              <strong>Outstanding Exemplary Student 2025</strong> — selected by HCMC Open University&apos;s
+              Commendation Council as the only student in the major to receive the title for Academic
+              Excellence and Conduct.
+              <span className="award-meta">2024 – 2025</span>
+            </li>
+            <li>
+              <strong>4th Prize, Student Informatics Olympiad 2024</strong> — Open Source Software
+              track. Built a low-code (Budibase) + computer-vision tool to assist response during
+              urgent situations (pandemics, natural disasters).
+              <span className="award-meta">NOV 2024 → DEC 2024 · Certificate of Merit</span>
+            </li>
+            <li>
+              <strong>Consolation Prize, Scientific Research</strong> — model to automate student
+              attendance and analyze attention via cornea-movement tracking.
+              <span className="award-meta">AUG 2023 → MAR 2024</span>
+            </li>
+          </ul>
+        </Reveal>
+
+        <Reveal as="section" id="certifications">
+          <h2>Certifications</h2>
+          <ul>
+            <li>
+              <strong>Big Data — Samsung Innovation Campus</strong> — Hadoop, Apache Spark, Kafka,
+              MariaDB.
+              <span className="award-meta">APR 2024 → AUG 2024 · Samsung Certificate</span>
+            </li>
+            <li>
+              <strong>Deep Learning Specialization (Course 1/5)</strong> — Simple Neural Networks
+              (Coursera, Andrew Ng).
+              <span className="award-meta">OCT 2023 → NOV 2023 · Coursera Certificate</span>
+            </li>
+            <li>
+              <strong>TOEIC 845 / 990</strong> — Conversational English proficiency.
             </li>
           </ul>
         </Reveal>
@@ -214,8 +249,6 @@ export default function Home() {
             </div>
           </a>
         </Reveal>
-
-        <TerminalLog />
 
         <footer id="contact">
           <div className="footer-grid">
