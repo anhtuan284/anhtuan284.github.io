@@ -1,4 +1,6 @@
 import { ImageResponse } from 'next/og';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 export const dynamic = 'force-static';
 export const alt = 'Tuan Truong Bui Anh — Mobile engineer';
@@ -16,11 +18,13 @@ async function loadFont(family: string, axes: string) {
 }
 
 export default async function OG() {
-  const [serif, serifBold, mono] = await Promise.all([
+  const [serif, serifBold, mono, portraitBuf] = await Promise.all([
     loadFont('Source+Serif+4', 'wght@400'),
     loadFont('Source+Serif+4', 'wght@600'),
     loadFont('JetBrains+Mono', 'wght@400'),
+    fs.readFile(path.join(process.cwd(), 'public/portrait.png')),
   ]);
+  const portrait = `data:image/png;base64,${portraitBuf.toString('base64')}`;
 
   return new ImageResponse(
     (
@@ -29,9 +33,7 @@ export default async function OG() {
           width: '100%',
           height: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '72px 80px',
+          padding: '64px 72px',
           background: '#050505',
           color: '#fafafa',
           fontFamily: 'Source Serif 4',
@@ -40,64 +42,96 @@ export default async function OG() {
         <div
           style={{
             display: 'flex',
-            fontSize: 22,
-            letterSpacing: 2,
-            color: '#a1a1a1',
-            fontFamily: 'JetBrains Mono',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            flex: 1,
+            paddingRight: 48,
           }}
         >
-          ▌ MOBILE_ENGINEER · HCMC · OPEN_TO_WORK
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
           <div
             style={{
               display: 'flex',
-              flexWrap: 'wrap',
-              fontSize: 128,
-              lineHeight: 1,
-              letterSpacing: -4,
-              fontWeight: 600,
+              fontSize: 20,
+              letterSpacing: 2,
+              color: '#a1a1a1',
+              fontFamily: 'JetBrains Mono',
             }}
           >
-            <span>Tuan&nbsp;</span>
-            <span
+            ▌ MOBILE_ENGINEER · HCMC · OPEN_TO_WORK
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div
               style={{
-                backgroundImage: 'linear-gradient(90deg, #fafafa, #6b6b6b)',
-                backgroundClip: 'text',
-                color: 'transparent',
+                display: 'flex',
+                flexWrap: 'wrap',
+                fontSize: 96,
+                lineHeight: 1.15,
+                letterSpacing: -3,
+                fontWeight: 600,
               }}
             >
-              Truong Bui&nbsp;
-            </span>
-            <span>Anh.</span>
+              <span>Tuan&nbsp;</span>
+              <span
+                style={{
+                  backgroundImage: 'linear-gradient(90deg, #fafafa, #6b6b6b)',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
+                Truong Bui&nbsp;
+              </span>
+              <span>Anh.</span>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                fontSize: 26,
+                color: '#a1a1a1',
+                lineHeight: 1.35,
+              }}
+            >
+              Mobile engineer in HCMC. Flutter + Firebase at PITEK. Backend, ML, mobile.
+            </div>
           </div>
 
           <div
             style={{
               display: 'flex',
-              fontSize: 30,
-              color: '#a1a1a1',
-              maxWidth: 980,
-              lineHeight: 1.35,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              fontFamily: 'JetBrains Mono',
+              fontSize: 20,
+              color: '#6b6b6b',
             }}
           >
-            Mobile engineer in HCMC. Flutter + Firebase at PITEK. Backend, ML, mobile.
+            <span style={{ color: '#fafafa' }}>ttba.dev</span>
+            <span>github · linkedin · mail</span>
           </div>
         </div>
 
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
-            fontFamily: 'JetBrains Mono',
-            fontSize: 22,
-            color: '#6b6b6b',
+            justifyContent: 'center',
+            width: 420,
+            flexShrink: 0,
           }}
         >
-          <span style={{ color: '#fafafa' }}>ttba.dev</span>
-          <span>github · linkedin · mail</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={portrait}
+            alt=""
+            width={420}
+            height={420}
+            style={{
+              borderRadius: '50%',
+              border: '1px solid #2a2a2a',
+              objectFit: 'cover',
+            }}
+          />
         </div>
       </div>
     ),
