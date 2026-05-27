@@ -1709,6 +1709,17 @@ footer .sig {
 }
 .terminal-log:hover .terminal-log-track { animation-play-state: paused; }
 
+/* ─────────────── award/recognition meta line ─────────────── */
+.award-meta {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: var(--fs-tiny);
+  letter-spacing: 0.08em;
+  color: var(--soft);
+  text-transform: uppercase;
+}
+
 /* ─────────────── responsive ─────────────── */
 @media (max-width: 1100px) {
   .topnav .nav-links { display: none; }
